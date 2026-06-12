@@ -1,0 +1,6 @@
+2026-01-15 10:00:00 INFO Usuario inició sesión
+2026-01-15 10:01:20 WARNING Intento de acceso lento
+2026-01-15 10:03:45 ERROR Error al conectar con la base de datos
+2026-01-15 10:05:00 INFO Consulta procesada correctamente
+2026-01-15 10:07:30 ERROR Timeout del servidor
+2026-01-15 10:09:10 INFO Usuario cerró sesión
