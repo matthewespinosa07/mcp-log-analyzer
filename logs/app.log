@@ -1,6 +1,10 @@
-2026-01-15 10:00:00 INFO Usuario inició sesión
-2026-01-15 10:01:20 WARNING Intento de acceso lento
-2026-01-15 10:03:45 ERROR Error al conectar con la base de datos
-2026-01-15 10:05:00 INFO Consulta procesada correctamente
-2026-01-15 10:07:30 ERROR Timeout del servidor
-2026-01-15 10:09:10 INFO Usuario cerró sesión
+2026-01-15 09:00:00 INFO Usuario admin inició sesión en el sistema Apple Orders
+2026-01-15 09:02:15 INFO Pedido #1001 creado correctamente: iPhone 15 Pro 256GB
+2026-01-15 09:04:22 INFO Pedido #1002 creado correctamente: MacBook Air M2 13 pulgadas
+2026-01-15 09:06:10 WARNING Stock bajo detectado para AirPods Pro 2
+2026-01-15 09:08:45 ERROR Error al procesar pago del pedido #1003: Apple Watch Series 9
+2026-01-15 09:10:30 INFO Pedido #1004 enviado correctamente: iPad Pro 11 pulgadas
+2026-01-15 09:12:05 ERROR Timeout al consultar pasarela de pagos para pedido #1005
+2026-01-15 09:15:50 CRITICAL Servicio de inventario no disponible para validar stock de MacBook Pro
+2026-01-15 09:18:20 WARNING Retraso en sincronización con bodega principal
+2026-01-15 09:20:00 INFO Usuario admin cerró sesión
