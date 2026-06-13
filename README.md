@@ -1,14 +1,14 @@
-# 🍎 MCP Apple Orders Monitor
+# 📊 MCP Log Analyzer
 
-Servidor MCP desarrollado en Python para monitorear y analizar logs de un sistema de gestión de pedidos de productos Apple.
+Servidor MCP desarrollado en Python para analizar archivos de logs y exponer herramientas de diagnóstico mediante Model Context Protocol (MCP).
 
 ---
 
 ## 📖 Descripción del proyecto
 
-**MCP Apple Orders Monitor** es un servidor MCP que analiza un archivo de logs (`app.log`) y expone herramientas para consultar, resumir y diagnosticar el estado operativo de un sistema de pedidos.
+**MCP Log Analyzer** es un servidor MCP que analiza un archivo de logs (`app.log`) y expone herramientas para consultar, resumir y diagnosticar el estado operativo de un sistema a partir de sus registros.
 
-El proyecto simula una plataforma donde se gestionan pedidos de productos Apple, como iPhone, MacBook, iPad, Apple Watch y AirPods. El sistema genera registros relacionados con pedidos, pagos, inventario y disponibilidad de servicios.
+El proyecto simula un entorno empresarial donde diferentes eventos del sistema son almacenados en archivos de log. Estos registros pueden contener información sobre operaciones exitosas, advertencias, errores y eventos críticos.
 
 Este proyecto fue desarrollado como parte de la materia **Ingeniería de Software II**, con el objetivo de comprender el funcionamiento del **Model Context Protocol (MCP)** y su integración con herramientas externas.
 
@@ -16,26 +16,26 @@ Este proyecto fue desarrollado como parte de la materia **Ingeniería de Softwar
 
 ## 🎯 Problema que resuelve
 
-Los sistemas empresariales generan grandes cantidades de logs que contienen información relevante sobre su funcionamiento.
+Los sistemas modernos generan grandes cantidades de registros que contienen información importante sobre su funcionamiento.
 
-En un sistema de gestión de pedidos, los logs pueden mostrar:
+Entre los eventos que pueden encontrarse en un archivo de logs están:
 
-* Pedidos creados correctamente.
-* Errores en pagos.
-* Problemas de inventario.
-* Advertencias operativas.
-* Retrasos en sincronización.
-* Fallos críticos del sistema.
+* Operaciones ejecutadas correctamente.
+* Advertencias del sistema.
+* Errores de ejecución.
+* Problemas de conectividad.
+* Fallos de servicios.
+* Eventos críticos que requieren atención inmediata.
 
-Normalmente, un desarrollador o administrador tendría que revisar estos archivos manualmente. Este servidor MCP permite automatizar parte de ese análisis y obtener respuestas estructuradas desde un cliente compatible con MCP.
+Analizar estos archivos manualmente puede ser una tarea lenta y propensa a errores. Este servidor MCP automatiza parte del proceso y permite consultar información relevante desde cualquier cliente compatible con MCP.
 
 ---
 
 ## 🧠 ¿Qué es MCP?
 
-**Model Context Protocol (MCP)** es un estándar abierto que permite que modelos de lenguaje interactúen con herramientas y datos externos de forma organizada.
+**Model Context Protocol (MCP)** es un estándar abierto que permite que modelos de lenguaje interactúen con herramientas y datos externos de forma estructurada.
 
-MCP permite conectar una IA con:
+MCP facilita la integración con:
 
 * Archivos.
 * APIs.
@@ -48,8 +48,8 @@ En este proyecto:
 * El **Host** puede ser una aplicación compatible con MCP.
 * El **Cliente MCP** se comunica con el servidor.
 * El **Servidor MCP** está desarrollado en Python.
-* Las **Tools** son funciones que analizan el log.
-* El **Resource** representa el archivo de log disponible para consulta.
+* Las **Tools** realizan operaciones sobre el archivo de logs.
+* El **Resource** expone el contenido del archivo para consulta.
 
 ---
 
@@ -68,7 +68,7 @@ Servidor MCP en Python
 logs/app.log
 ```
 
-El servidor se ejecuta localmente usando transporte `stdio`, lo que permite que MCP Inspector se comunique con el servidor y pruebe sus Tools y Resources.
+El servidor utiliza transporte `stdio`, permitiendo la comunicación directa con MCP Inspector para probar herramientas y recursos.
 
 ---
 
@@ -87,7 +87,7 @@ El servidor se ejecuta localmente usando transporte `stdio`, lo que permite que 
 ## 📁 Estructura del proyecto
 
 ```text
-mcp-apple-orders-monitor/
+mcp-log-analyzer/
 │
 ├── server.py
 ├── README.md
@@ -99,7 +99,7 @@ mcp-apple-orders-monitor/
 │   ├── 02-lista-tools.png
 │   ├── 03-resumir-log.png
 │   ├── 04-diagnostico-pedidos.png
-│   └── 05-resource-apple-orders.png
+│   └── 05-resource-app-log.png
 │
 └── logs/
     └── app.log
@@ -109,61 +109,52 @@ mcp-apple-orders-monitor/
 
 ## 💻 Código del servidor
 
-El código principal del servidor MCP se encuentra en el archivo:
+El código principal se encuentra en:
 
 ```text
 server.py
 ```
 
-Este archivo contiene la implementación del servidor usando `FastMCP`.
+Este archivo contiene la implementación del servidor utilizando `FastMCP`.
 
-En `server.py` se definen las Tools del proyecto:
+Las herramientas implementadas son:
 
 * `contar_lineas_log`
 * `buscar_errores_log`
 * `resumir_log`
 * `diagnosticar_estado_pedidos`
 
-También se define el Resource:
-
-* `log://apple-orders`
-
-El servidor se ejecuta mediante transporte `stdio`, lo que permite probarlo localmente usando MCP Inspector.
+También se define un Resource para exponer el contenido del archivo de logs.
 
 ---
 
 ## 📄 Archivo de logs
 
-El archivo `logs/app.log` simula eventos reales de un sistema de pedidos de productos Apple.
-
-Ejemplo de contenido:
+El archivo:
 
 ```text
-2026-01-15 09:00:00 INFO Usuario admin inició sesión en el sistema Apple Orders
-2026-01-15 09:02:15 INFO Pedido #1001 creado correctamente: iPhone 15 Pro 256GB
-2026-01-15 09:04:22 INFO Pedido #1002 creado correctamente: MacBook Air M2 13 pulgadas
-2026-01-15 09:06:10 WARNING Stock bajo detectado para AirPods Pro 2
-2026-01-15 09:08:45 ERROR Error al procesar pago del pedido #1003: Apple Watch Series 9
-2026-01-15 09:10:30 INFO Pedido #1004 enviado correctamente: iPad Pro 11 pulgadas
-2026-01-15 09:12:05 ERROR Timeout al consultar pasarela de pagos para pedido #1005
-2026-01-15 09:15:50 CRITICAL Servicio de inventario no disponible para validar stock de MacBook Pro
-2026-01-15 09:18:20 WARNING Retraso en sincronización con bodega principal
-2026-01-15 09:20:00 INFO Usuario admin cerró sesión
+logs/app.log
+```
+
+contiene eventos simulados para demostrar las capacidades de análisis del servidor.
+
+Ejemplo:
+
+```text
+2026-01-15 09:00:00 INFO Inicio del sistema
+2026-01-15 09:02:15 INFO Proceso ejecutado correctamente
+2026-01-15 09:04:22 WARNING Consumo elevado de memoria
+2026-01-15 09:08:45 ERROR Error de conexión con servicio externo
+2026-01-15 09:15:50 CRITICAL Servicio principal no disponible
 ```
 
 ---
 
 # 🔧 Tools implementadas
 
-## 1️⃣ `contar_lineas_log`
+## 1️⃣ contar_lineas_log
 
-Cuenta la cantidad total de líneas del archivo de log.
-
-### Entrada
-
-```text
-app.log
-```
+Cuenta la cantidad total de líneas presentes en el archivo de log.
 
 ### Resultado esperado
 
@@ -176,66 +167,31 @@ app.log
 
 ---
 
-## 2️⃣ `buscar_errores_log`
+## 2️⃣ buscar_errores_log
 
 Busca eventos problemáticos dentro del archivo de log.
 
 Detecta líneas con nivel:
 
-* `ERROR`
-* `CRITICAL`
-
-### Entrada
-
-```text
-app.log
-```
+* ERROR
+* CRITICAL
 
 ### Resultado esperado
 
 ```json
 {
   "archivo": "app.log",
-  "total_eventos_problematicos": 3,
-  "eventos": [
-    {
-      "linea": 5,
-      "contenido": "2026-01-15 09:08:45 ERROR Error al procesar pago del pedido #1003: Apple Watch Series 9"
-    },
-    {
-      "linea": 7,
-      "contenido": "2026-01-15 09:12:05 ERROR Timeout al consultar pasarela de pagos para pedido #1005"
-    },
-    {
-      "linea": 8,
-      "contenido": "2026-01-15 09:15:50 CRITICAL Servicio de inventario no disponible para validar stock de MacBook Pro"
-    }
-  ]
+  "total_eventos_problematicos": 3
 }
 ```
 
 ---
 
-## 3️⃣ `resumir_log`
+## 3️⃣ resumir_log
 
 Genera un resumen de eventos por nivel.
 
-### Entrada
-
-```text
-app.log
-```
-
 ### Resultado esperado
-
-| Nivel    | Cantidad |
-| -------- | -------- |
-| INFO     | 5        |
-| WARNING  | 2        |
-| ERROR    | 2        |
-| CRITICAL | 1        |
-
-También puede verse en formato JSON:
 
 ```json
 {
@@ -251,36 +207,22 @@ También puede verse en formato JSON:
 
 ---
 
-## 4️⃣ `diagnosticar_estado_pedidos`
+## 4️⃣ diagnosticar_estado_pedidos
 
-Analiza el resumen del log y determina el estado general del sistema de pedidos.
+Analiza el contenido del log y determina el estado general del sistema.
 
 Estados posibles:
 
-* ✅ `ESTABLE`
-* 🟡 `EN_OBSERVACION`
-* 🟠 `CON_ERRORES`
-* 🔴 `CRITICO`
-
-### Entrada
-
-```text
-app.log
-```
+* ✅ ESTABLE
+* 🟡 EN_OBSERVACION
+* 🟠 CON_ERRORES
+* 🔴 CRITICO
 
 ### Resultado esperado
 
 ```json
 {
-  "archivo": "app.log",
-  "estado_general": "CRITICO",
-  "resumen": {
-    "INFO": 5,
-    "WARNING": 2,
-    "ERROR": 2,
-    "CRITICAL": 1
-  },
-  "recomendacion": "Revisar inmediatamente el servicio de inventario, ya que existe al menos un evento crítico que puede afectar la validación de stock y la continuidad de los pedidos."
+  "estado_general": "CRITICO"
 }
 ```
 
@@ -288,7 +230,7 @@ app.log
 
 # 📚 Resource implementado
 
-## `log://apple-orders`
+## log://app-log
 
 Expone el contenido completo del archivo:
 
@@ -296,32 +238,22 @@ Expone el contenido completo del archivo:
 logs/app.log
 ```
 
-Este Resource permite que un cliente MCP consulte el log operativo del sistema de pedidos Apple.
+Este recurso permite que un cliente MCP consulte directamente el archivo de registros.
 
 ---
 
 # ⚙️ Instalación
 
-## 1️⃣ Clonar o descargar el proyecto
-
-Si se clona desde GitHub:
+## 1️⃣ Clonar el repositorio
 
 ```bash
 git clone <url-del-repositorio>
-cd mcp-apple-orders-monitor
-```
-
-Si el repositorio tiene otro nombre, entrar a la carpeta correspondiente. Por ejemplo:
-
-```bash
 cd mcp-log-analyzer
 ```
 
 ---
 
 ## 2️⃣ Crear entorno virtual
-
-En macOS:
 
 ```bash
 python3 -m venv .venv
@@ -343,49 +275,45 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Si no existe el archivo `requirements.txt`, se puede instalar directamente la dependencia principal:
+O instalar MCP directamente:
 
 ```bash
 pip install "mcp[cli]"
-```
-
-Luego se puede generar el archivo `requirements.txt` con:
-
-```bash
-pip freeze > requirements.txt
 ```
 
 ---
 
 # ▶️ Ejecución
 
-Para iniciar el servidor MCP en modo desarrollo:
+Para iniciar el servidor:
 
 ```bash
 mcp dev server.py
 ```
 
-Este comando abre **MCP Inspector**, una herramienta que permite probar las Tools y Resources del servidor MCP.
+Esto abrirá MCP Inspector para probar las herramientas y recursos disponibles.
 
 ---
 
 # 🧪 Pruebas realizadas
 
-Las pruebas se realizaron usando **MCP Inspector**.
+Las pruebas fueron realizadas utilizando MCP Inspector.
 
 ## ✅ Prueba 1: conexión del servidor
 
 Se verificó que MCP Inspector se conecta correctamente al servidor:
 
 ```text
-mcp-apple-orders-monitor
+mcp-log-analyzer
 ```
+
+**Evidencia:** `01-servidor-conectado.png`
 
 ---
 
 ## ✅ Prueba 2: listado de Tools
 
-Se verificó que el servidor expone correctamente las siguientes Tools:
+Se verificó que el servidor expone correctamente:
 
 ```text
 contar_lineas_log
@@ -394,77 +322,46 @@ resumir_log
 diagnosticar_estado_pedidos
 ```
 
----
-
-## ✅ Prueba 3: ejecución de `resumir_log`
-
-Entrada usada:
-
-```text
-app.log
-```
-
-Resultado esperado:
-
-```json
-{
-  "INFO": 5,
-  "WARNING": 2,
-  "ERROR": 2,
-  "CRITICAL": 1
-}
-```
+**Evidencia:** `02-lista-tools.png`
 
 ---
 
-## ✅ Prueba 4: ejecución de `diagnosticar_estado_pedidos`
+## ✅ Prueba 3: ejecución de resumir_log
 
-Entrada usada:
+Se comprobó la generación correcta del resumen de eventos.
 
-```text
-app.log
-```
+**Evidencia:** `03-resumir-log.png`
 
-Resultado esperado:
+---
 
-```text
-Estado general: CRITICO
-```
+## ✅ Prueba 4: ejecución de diagnosticar_estado_pedidos
 
-Esto indica que el sistema requiere atención inmediata debido a un evento crítico relacionado con el servicio de inventario.
+Se verificó el diagnóstico automático del estado del sistema.
+
+**Evidencia:** `04-diagnostico-pedidos.png`
 
 ---
 
 ## ✅ Prueba 5: consulta del Resource
 
-Se verificó que el Resource:
+Se verificó la lectura correcta del Resource asociado al archivo de logs.
 
-```text
-log://apple-orders
-```
-
-permite consultar el contenido del archivo:
-
-```text
-logs/app.log
-```
+**Evidencia:** `05-resource-app-log.png`
 
 ---
 
 # 🎓 Relación con Ingeniería de Software
 
-Este proyecto aplica conceptos de Ingeniería de Software como:
+Este proyecto aplica conceptos fundamentales de Ingeniería de Software:
 
+* Arquitectura cliente-servidor.
 * Integración entre sistemas.
 * Monitoreo de aplicaciones.
+* Procesamiento de información.
 * Análisis de logs.
-* Arquitectura cliente-servidor.
-* Protocolos de comunicación.
 * Reutilización de componentes.
-* Separación de responsabilidades.
+* Protocolos de comunicación.
 * Uso de estándares abiertos.
-
-MCP facilita que una aplicación de inteligencia artificial pueda interactuar con herramientas externas sin crear una integración personalizada diferente para cada sistema.
 
 ---
 
@@ -478,7 +375,7 @@ Este repositorio cubre los entregables correspondientes a la **Opción A: Implem
 * Resource personalizado.
 * Instrucciones de instalación.
 * Instrucciones de ejecución.
-* Pruebas realizadas con MCP Inspector.
+* Evidencias de pruebas realizadas.
 * Repositorio documentado en GitHub.
 
 ---
@@ -487,9 +384,9 @@ Este repositorio cubre los entregables correspondientes a la **Opción A: Implem
 
 El proyecto demuestra cómo MCP permite conectar herramientas personalizadas con modelos de lenguaje mediante un protocolo estándar.
 
-A través de este servidor es posible analizar logs, detectar errores, identificar eventos críticos y generar diagnósticos operativos de forma automatizada.
+A través de este servidor es posible analizar archivos de logs, detectar errores, identificar eventos críticos y generar diagnósticos operativos de forma automatizada.
 
-La solución es sencilla, pero representa un caso realista de uso empresarial: apoyar el monitoreo y diagnóstico inicial de un sistema de pedidos mediante herramientas conectadas a clientes compatibles con MCP.
+La solución representa un caso práctico de integración entre inteligencia artificial y sistemas externos para facilitar tareas de monitoreo y análisis de registros.
 
 ---
 
