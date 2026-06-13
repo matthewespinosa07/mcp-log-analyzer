@@ -94,6 +94,13 @@ mcp-apple-orders-monitor/
 ├── requirements.txt
 ├── .gitignore
 │
+├── evidencias/
+│   ├── 01-servidor-conectado.png
+│   ├── 02-lista-tools.png
+│   ├── 03-resumir-log.png
+│   ├── 04-diagnostico-pedidos.png
+│   └── 05-resource-apple-orders.png
+│
 └── logs/
     └── app.log
 ```
